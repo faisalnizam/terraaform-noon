@@ -1,0 +1,63 @@
+---
+- hosts: all 
+  vars: 
+    root_path: /opt/memsql/
+  sudo: yes
+  tasks:
+  - name: Creates directory
+    file: 
+        path=/opt/memsql 
+        state=directory
+  - name: Download MemSQL community edition
+    get_url: url=http://download.memsql.com/memsql-ops-5.7.1/memsql-ops-5.7.1.tar.gz dest={{ root_path }}memsql-ops-5.7.1.tar.gz
+  - name: Unpack MemSQL in root_dir
+    unarchive:
+             src: /opt/memsql/memsql-ops-5.7.1.tar.gz
+             dest: "{{ root_path }}"
+             remote_src: True
+
+  - name: Install MemSQL 
+    shell: yes '' | "{{ root_path }}memsql-ops-5.7.1/install.sh"
+    ignore_errors: yes
+  - name: MySQL repos 
+    yum:  
+       name: https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+       state: present
+  - name: Install mysql-client using the just installed repo
+    yum: 
+       name: mysql-community-client.x86_64
+       state: present
+    ignore_errors: yes
+
+- hosts: memsql_master_aggregator_public_ips
+  vars:
+    root_path: /opt/memsql/
+  sudo: yes
+  tasks:
+  - name: configure the master aggregator role 
+    command: memsql-ops memsql-deploy --community-edition --role master
+    ignore_errors: yes
+
+- hosts: memsql_aggregator_public_ips
+  vars:
+    root_path: /opt/memsql/
+  sudo: yes
+  tasks:
+  - name: follow the master
+    command: memsql-ops follow -h memsqlmaster01.data.noon.int -P 9000
+    ignore_errors: yes
+  - name: configure the aggregator role 
+    command: memsql-ops memsql-deploy --community-edition --role aggregator
+    ignore_errors: yes
+
+- hosts: memsql_leaf_node_public_ips
+  vars:
+    root_path: /opt/memsql/
+  sudo: yes
+  tasks:
+  - name: configure the leaf node role       
+    command: memsql-ops memsql-deploy --community-edition --role leaf
+    ignore_errors: yes
+  - name: follow the master
+    command: memsql-ops follow -h memsqlmaster01.data.noon.int -P 9000
+    ignore_errors: yes

@@ -1,0 +1,8 @@
+[memsql_master_aggregator_public_ips]
+34.251.45.187
+
+[memsql_aggregator_public_ips]
+34.251.46.225
+
+[memsql_leaf_node_public_ips]
+34.249.98.189

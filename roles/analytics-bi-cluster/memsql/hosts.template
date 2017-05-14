@@ -1,0 +1,8 @@
+[memsql_master_aggregator_public_ips]
+1.0.0.1
+
+[memsql_aggregator_public_ips]
+1.0.0.2
+
+[memsql_leaf_node_public_ips]
+1.0.0.3
