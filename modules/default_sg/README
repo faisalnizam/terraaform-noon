@@ -1,0 +1,29 @@
+******* How TO ******
+
+
+Use the below module definition to initiate the security group within your own code. 
+Ignore the < > within the definition. 
+
+Required Parameters are 
+
+name 
+environment 
+vpc_id 
+
+
+Result 
+Opens Up default Ports  
+1. SSH Port 
+2. Communication Ports to Promotheus 
+
+
+module "< your module name >" {
+        source = "./modules/default_sg"
+        name = "${var.app_name}"
+        environment = "${var.environment_name}"
+        vpc_id = "${module.vpc_subnets.vpc_id}"
+        source_cidr_block = "0.0.0.0/0"
+}
+
+
+

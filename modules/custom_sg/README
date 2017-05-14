@@ -1,0 +1,42 @@
+******* How TO ******
+
+
+Use the below module definition to initiate the security group within your own code. 
+Ignore the < > within the definition. 
+
+Required Parameters are 
+-----------------------
+
+1. name 
+2. environment 
+3. vpc_id 
+4. source_cid_block  
+5. from_port 
+6. to_port 
+
+Explaination: 
+The variables defined can be send values from another file <main.tf> 
+or they can be defined with some static values like for e.g. 
+from_port = 10 
+OR 
+from_port = "${var.my_custom_defined_port_in_main-tf}" 
+
+
+
+Result
+-------- 
+Opens Up Custom Ports Defined 
+1. SSH Port 
+2. Communication Ports to Promotheus 
+
+
+
+module "< your module name >" {
+        source = "./modules/default_sg"
+        name = "${var.app_name}"
+        environment = "${var.environment_name}"
+        from_port    = 10 
+        to_port      = 20 
+        vpc_id = "${module.vpc_subnets.vpc_id}"
+        source_cidr_block = "0.0.0.0/0"
+}
