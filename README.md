@@ -12,3 +12,15 @@ Terraform Modules Created For Noon.com
 * Security Group (Custom and Default) 
 
 * Auto Scaling Group (ASG) 
+
+
+
+# Roles Directory 
+
+The Roles Directory contains all the example of how to use the above modules 
+
+```Create Analytics Cluster```
+
+```Create Network Cluster for CISCO```
+
+```Create Local JFROG Artificatory```
